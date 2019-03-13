@@ -23,13 +23,26 @@ public class MainActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,
+                Toast toast=Toast.makeText(MainActivity.this,
                         getString(R.string.correctToast),
 
-                        Toast.LENGTH_SHORT).show();
-
-                mTrueButton.setGravity(Gravity.CENTER|Gravity.LEFT);
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER|Gravity.TOP,0,0);
+                toast.show();
                             } });
+
+        mFalseButton = (Button) findViewById(R.id.false_button);
+        mFalseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast=Toast.makeText(MainActivity.this,
+                        R.string.incorrect_toast,
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER|Gravity.TOP,0,0);
+                toast.show();
+
+
+            } });
 
     }//fin onCreate
 }
