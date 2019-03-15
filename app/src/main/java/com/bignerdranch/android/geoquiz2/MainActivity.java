@@ -14,9 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity {
-
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
@@ -42,23 +40,24 @@ public class MainActivity extends AppCompatActivity {
 
         //HACEMOS referencia al TextView
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
-        //int question = mQuestionBank[mCurrentIndex].getTextResId();
-        //mQuestionTextView.setText(question);
+        //añadimos la funcion de que el textview funcione como boton siguiente
+        mQuestionTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                int question = mQuestionBank[mCurrentIndex].getTextResId();
+                mQuestionTextView.setText(question);
+                updateQuestion();//generamos una pregunta y la presentamos en la pantalla
+            }
+        });
+
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //rnviamos la respesta para ser analisada
                 checkAnswer(true);
-
-
-                /*Toast toast=Toast.makeText(MainActivity.this,
-                        getString(R.string.correct_toast),
-                        Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER|Gravity.TOP,0,0);
-                toast.show();*/
                             } });
 
         mFalseButton = (Button) findViewById(R.id.false_button);
@@ -68,12 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //enviamos la respuesta false para ser analisada
                 checkAnswer(false);
-
-                /*Toast toast=Toast.makeText(MainActivity.this,
-                        R.string.incorrect_toast,
-                        Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER|Gravity.TOP,0,0);
-                toast.show();*/
             } });
 
         //creamos el Listener para el boton Next
@@ -86,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 mQuestionTextView.setText(question);
                 updateQuestion();//generamos una pregunta y la presentamos en la pantalla
             }
-        });
+        });//fin button next
 
         updateQuestion();
     }//fin onCreate
