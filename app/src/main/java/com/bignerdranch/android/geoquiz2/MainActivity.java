@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
+    int sum=0;
 
     //creamos un arreglo tipo question(objeto) que contendra el id(referencia a string de la pregunta y su boolean
     private Question[] mQuestionBank = new Question[] {
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
 
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
-            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-        }
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0); }
 
         //HACEMOS referencia al TextView
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -73,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //rnviamos la respesta para ser analisada
                 checkAnswer(true);
+                mTrueButton.setEnabled(false);
+                mFalseButton.setEnabled(false);
                             } });
 
         mFalseButton = (Button) findViewById(R.id.false_button);
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //enviamos la respuesta false para ser analisada
                 checkAnswer(false);
+                mTrueButton.setEnabled(false);
+                mFalseButton.setEnabled(false);
             } });
 
         //creamos el Listener para el boton Next
@@ -90,9 +93,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                int question = mQuestionBank[mCurrentIndex].getTextResId();
-                mQuestionTextView.setText(question);
-                updateQuestion();//generamos una pregunta y la presentamos en la pantalla
+                if (mCurrentIndex >= mQuestionBank.length){
+                    int resum= ((sum*100)/6);
+                    String s="%";
+                    s= resum+s;
+                    Toast.makeText(MainActivity.this, s,Toast.LENGTH_SHORT).show();//manda un toast con el promedio
+
+                }else {
+                    int question = mQuestionBank[mCurrentIndex].getTextResId();
+                    mQuestionTextView.setText(question);
+                    mFalseButton.setEnabled(true);
+                    mTrueButton.setEnabled(true);
+                    updateQuestion();//generamos una pregunta y la presentamos en la pantalla
+                }
+
+
             }
         });//fin button next
 
@@ -104,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 int question = mQuestionBank[mCurrentIndex].getTextResId();
                 mQuestionTextView.setText(question);
+                mTrueButton.setEnabled(false);
+                mFalseButton.setEnabled(false);
                 updateQuestion();//generamos una pregunta y la presentamos en la pantalla
             }
         });//fin button next
@@ -122,9 +139,12 @@ public class MainActivity extends AppCompatActivity {
         int messageResId = 0;
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            sum+=1;//cada vez que tiene una correcta aumenta sum
+
         } else {
             messageResId = R.string.incorrect_toast;
         }
+
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
                 .show();
     }
