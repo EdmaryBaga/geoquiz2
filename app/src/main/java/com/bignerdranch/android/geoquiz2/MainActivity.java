@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         //HACEMOS referencia al TextView
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        //Log.d(TAG, "Updating question text", new Exception());
         //añadimos la funcion de que el textview funcione como boton siguiente
         mQuestionTextView.setOnClickListener(new View.OnClickListener(){
             @Override
