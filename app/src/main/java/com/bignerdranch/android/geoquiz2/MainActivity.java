@@ -6,6 +6,7 @@
 package com.bignerdranch.android.geoquiz2;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import static android.view.Gravity.*;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
+    private Button mCheatButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
     int sum=0;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                if (mCurrentIndex >= mQuestionBank.length){
+                if (mCurrentIndex >= mQuestionBank.length-1){
                     int resum= ((sum*100)/6);
                     String s="%";
                     s= resum+s;
@@ -125,6 +127,18 @@ public class MainActivity extends AppCompatActivity {
                 updateQuestion();//generamos una pregunta y la presentamos en la pantalla
             }
         });//fin button next
+
+        mCheatButton = (Button)findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start CheatActivity
+                //Intent intent = new Intent(MainActivity.this, CheatActivity.class);
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+                startActivity(intent);
+            }
+        });
 
         updateQuestion();
     }//fin onCreate
