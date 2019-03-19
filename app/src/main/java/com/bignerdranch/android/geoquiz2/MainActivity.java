@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     String s="%";
                     s= resum+s;
                     Toast.makeText(MainActivity.this, s,Toast.LENGTH_SHORT).show();//manda un toast con el promedio
-
+                    mNextButton.setEnabled(false);//evita que se regresen las preguntas
                 }else {
                     int question = mQuestionBank[mCurrentIndex].getTextResId();
                     mQuestionTextView.setText(question);
